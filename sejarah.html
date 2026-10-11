@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rempa & Tahta: Perlawanan Ternate & Tidore</title>
+
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- GLOBAL BASE VARS --- */
+        :root {
+            --bg-body: #0a0e17;
+            --bg-card: rgba(15, 23, 42, 0.85);
+            --primary-gold: #d4af37;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+            --border-glass: rgba(255, 255, 255, 0.12);
+            --radius-lg: 20px;
+            --radius-md: 14px;
+            --radius-sm: 8px;
+            --transition-smooth: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            
+            /* Theme Dynamic Variables */
+            --page-theme-color: #d4af37;
+            --page-theme-glow: rgba(212, 175, 55, 0.25);
+            --page-bg-accent: radial-gradient(circle at 10% 10%, rgba(212, 175, 55, 0.08) 0%, transparent 45%);
+        }
+
+        /* --- THEME PALETTES PER PAGE --- */
+        /* 1. Beranda: Dark Royal Gold */
+        body[data-page="beranda"] {
+            --page-theme-color: #d4af37;
+            --page-theme-glow: rgba(212, 175, 55, 0.3);
+            --page-bg-accent: radial-gradient(circle at 50% 10%, rgba(212, 175, 55, 0.12) 0%, transparent 60%);
+        }
+
+        /* 2. Latar Belakang: Spice & Trade Mahogany */
+        body[data-page="latar"] {
+            --page-theme-color: #c86832;
+            --page-theme-glow: rgba(200, 104, 50, 0.3);
+            --page-bg-accent: radial-gradient(circle at 80% 20%, rgba(180, 83, 9, 0.15) 0%, transparent 55%);
+        }
+
+        /* 3. Perlawanan: Crimson War Red */
+        body[data-page="perlawanan"] {
+            --page-theme-color: #ef4444;
+            --page-theme-glow: rgba(239, 68, 68, 0.35);
+            --page-bg-accent: radial-gradient(circle at 20% 80%, rgba(220, 38, 38, 0.18) 0%, transparent 55%);
+        }
+
+        /* 4. Peta Strategis: Ocean Deep Teal */
+        body[data-page="peta"] {
+            --page-theme-color: #14b8a6;
+            --page-theme-glow: rgba(20, 184, 166, 0.3);
+            --page-bg-accent: radial-gradient(circle at 50% 50%, rgba(13, 148, 136, 0.15) 0%, transparent 65%);
+        }
+
+        /* 5. Garis Waktu: Chronicle Amber */
+        body[data-page="kronologi"] {
+            --page-theme-color: #f59e0b;
+            --page-theme-glow: rgba(245, 158, 11, 0.3);
+            --page-bg-accent: radial-gradient(circle at 90% 10%, rgba(217, 119, 6, 0.15) 0%, transparent 50%);
+        }
+
+        /* 6. Tokoh 3D: Regal Velvet Gold */
+        body[data-page="tokoh"] {
+            --page-theme-color: #a855f7;
+            --page-theme-glow: rgba(168, 85, 247, 0.3);
+            --page-bg-accent: radial-gradient(circle at 10% 90%, rgba(147, 51, 234, 0.15) 0%, transparent 55%);
+        }
+
+        /* 7. Kuis: Victory Emerald */
+        body[data-page="kuis"] {
+            --page-theme-color: #10b981;
+            --page-theme-glow: rgba(16, 185, 129, 0.3);
+            --page-bg-accent: radial-gradient(circle at 50% 20%, rgba(5, 150, 105, 0.15) 0%, transparent 60%);
+        }
+
+        /* --- RESET & BODY --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: var(--page-bg-accent);
+            background-attachment: fixed;
+            line-height: 1.7;
+            transition: background 0.5s ease;
+        }
+
+        /* --- HEADER & NAV --- */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 0.9rem 4%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(10, 14, 23, 0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-glass);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .brand-logo {
+            font-family: 'Cinzel', serif;
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--page-theme-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .nav-list {
+            display: flex;
+            list-style: none;
+            gap: 4px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 4px;
+            border-radius: 40px;
+            border: 1px solid var(--border-glass);
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-btn:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .nav-btn.active {
+            color: #070a13;
+            background: var(--page-theme-color);
+            font-weight: 800;
+            box-shadow: 0 0 15px var(--page-theme-glow);
+        }
+
+        /* --- MAIN CONTAINER --- */
+        main {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 105px 20px 80px 20px;
+        }
+
+        .page {
+            display: none;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: var(--transition-smooth);
+        }
+
+        .page.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- TYPOGRAPHY & BADGES --- */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--page-theme-color);
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 1px solid var(--page-theme-color);
+            margin-bottom: 14px;
+            box-shadow: 0 0 10px var(--page-theme-glow);
+        }
+
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 2.3rem;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .section-desc {
+            color: var(--text-secondary);
+            font-size: 1.02rem;
+            max-width: 820px;
+            margin-bottom: 35px;
+            line-height: 1.8;
+        }
+
+        /* --- CARDS & ARTICLES --- */
+        .article-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: var(--transition-smooth);
+        }
+
+        .article-card:hover {
+            border-color: var(--page-theme-color);
+        }
+
+        .article-card h3 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.45rem;
+            color: var(--page-theme-color);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .article-card p {
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+            font-size: 0.98rem;
+            text-align: justify;
+        }
+
+        /* CLICK TO REVEAL EXPANDABLE CARDS */
+        .reveal-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-md);
+            padding: 20px 24px;
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .reveal-card:hover {
+            border-color: var(--page-theme-color);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .reveal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .reveal-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, margin-top 0.3s ease;
+            color: var(--text-secondary);
+            font-size: 0.94rem;
+            line-height: 1.7;
+        }
+
+        .reveal-card.open .reveal-body {
+            max-height: 500px;
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px dashed var(--border-glass);
+        }
+
+        .reveal-card.open .reveal-icon {
+            transform: rotate(180deg);
+            color: var(--page-theme-color);
+        }
+
+        /* --- MAP SECTION --- */
+        .map-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            margin-bottom: 40px;
+        }
+
+        .map-container-grid {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .svg-map-wrapper {
+            background: radial-gradient(circle at center, #0f172a 0%, #060913 100%);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--page-theme-color);
+            padding: 20px;
+            position: relative;
+            min-height: 460px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.8);
+        }
+
+        .svg-map-wrapper svg {
+            width: 100%;
+            height: auto;
+            max-height: 440px;
+            filter: drop-shadow(0 0 10px rgba(0,0,0,0.9));
+        }
+
+        .island-shape {
+            fill: #1e293b;
+            stroke: #475569;
+            stroke-width: 1.5;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+        }
+
+        .island-shape:hover, .island-shape.active-island {
+            fill: #334155;
+            stroke: var(--page-theme-color);
+            stroke-width: 2.5;
+            filter: drop-shadow(0 0 8px var(--page-theme-glow));
+        }
+
+        .map-marker {
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .map-marker:hover circle:first-child {
+            fill: #fff;
+            r: 7;
+        }
+
+        .map-inspector {
+            background: rgba(10, 15, 30, 0.95);
+            border: 1px solid var(--page-theme-color);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            min-height: 420px;
+            box-shadow: 0 0 20px var(--page-theme-glow);
+        }
+
+        /* --- TIMELINE SLIDER --- */
+        .timeline-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-lg);
+            padding: 32px;
+            margin-bottom: 40px;
+        }
+
+        .timeline-track {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 35px;
+        }
+
+        .timeline-track::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .timeline-node {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #0f172a;
+            border: 2px solid var(--border-glass);
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            position: relative;
+            z-index: 2;
+            transition: var(--transition-smooth);
+        }
+
+        .timeline-node:hover, .timeline-node.active {
+            border-color: var(--page-theme-color);
+            color: var(--page-theme-color);
+            background: #1e293b;
+            box-shadow: 0 0 15px var(--page-theme-glow);
+            transform: scale(1.15);
+        }
+
+        .timeline-node-label {
+            position: absolute;
+            top: 54px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            color: var(--text-muted);
+        }
+
+        .timeline-node.active .timeline-node-label {
+            color: var(--page-theme-color);
+            font-weight: 700;
+        }
+
+        /* --- 3D FLIP CARDS TOKOH --- */
+        .cards-3d-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 28px;
+            margin-bottom: 40px;
+        }
+
+        .card-3d-wrapper {
+            perspective: 1000px;
+            height: 430px;
+        }
+
+        .card-3d-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .card-3d-wrapper:hover .card-3d-inner, .card-3d-inner.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-glass);
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card-front {
+            background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.85));
+        }
+
+        .card-back {
+            background: #0f172a;
+            border-color: var(--page-theme-color);
+            transform: rotateY(180deg);
+            overflow-y: auto;
+        }
+
+        /* --- KUIS COMPONENT --- */
+        .quiz-wrapper {
+            background: var(--bg-card);
+            border: 1px solid var(--page-theme-color);
+            border-radius: var(--radius-lg);
+            padding: 35px;
+            max-width: 900px;
+            margin: 0 auto;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        }
+
+        .quiz-opt-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 16px 22px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-size: 0.96rem;
+            margin-top: 14px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            text-align: left;
+        }
+
+        .quiz-opt-btn:hover {
+            border-color: var(--page-theme-color);
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateX(5px);
+        }
+
+        .quiz-opt-btn.correct {
+            background: rgba(16, 185, 129, 0.2) !important;
+            border-color: #10b981 !important;
+            color: #6ee7b7 !important;
+        }
+
+        .quiz-opt-btn.incorrect {
+            background: rgba(239, 68, 68, 0.2) !important;
+            border-color: #ef4444 !important;
+            color: #fca5a5 !important;
+        }
+
+        .explanation-box {
+            margin-top: 22px;
+            padding: 20px 24px;
+            border-radius: var(--radius-md);
+            background: rgba(10, 15, 30, 0.95);
+            border: 1px solid var(--page-theme-color);
+            display: none;
+            line-height: 1.7;
+        }
+
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 900px) {
+            .map-container-grid { grid-template-columns: 1fr; }
+            .section-title { font-size: 1.9rem; }
+            .timeline-track { overflow-x: auto; padding-bottom: 20px; justify-content: flex-start; gap: 35px; }
+            .timeline-track::before { width: 650px; }
+            .nav-list span { display: none; }
+            .nav-btn { padding: 8px 12px; }
+        }
+    </style>
+</head>
+<body data-page="beranda">
+
+    <!-- HEADER NAVIGATION -->
+    <header>
+        <div class="brand-logo" onclick="switchPage('beranda')">
+            <i class="fa-solid fa-crown"></i>
+            <span>Rempa&Tahta</span>
+        </div>
+        <nav>
+            <ul class="nav-list">
+                <li><button id="nav-beranda" class="nav-btn active" onclick="switchPage('beranda')"><i class="fa-solid fa-house"></i> <span>Beranda</span></button></li>
+                <li><button id="nav-latar" class="nav-btn" onclick="switchPage('latar')"><i class="fa-solid fa-compass"></i> <span>Latar Belakang</span></button></li>
+                <li><button id="nav-perlawanan" class="nav-btn" onclick="switchPage('perlawanan')"><i class="fa-solid fa-shield-halved"></i> <span>Perlawanan</span></button></li>
+                <li><button id="nav-peta" class="nav-btn" onclick="switchPage('peta')"><i class="fa-solid fa-map-location-dot"></i> <span>Peta Strategis</span></button></li>
+                <li><button id="nav-kronologi" class="nav-btn" onclick="switchPage('kronologi')"><i class="fa-solid fa-timeline"></i> <span>Garis Waktu</span></button></li>
+                <li><button id="nav-tokoh" class="nav-btn" onclick="switchPage('tokoh')"><i class="fa-solid fa-users"></i> <span>Tokoh 3D</span></button></li>
+                <li><button id="nav-kuis" class="nav-btn" onclick="switchPage('kuis')"><i class="fa-solid fa-trophy"></i> <span>Kuis</span></button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- ================= HALAMAN 1: BERANDA ================= -->
+        <section id="page-beranda" class="page active">
+            <div style="text-align: center; padding: 25px 20px 45px 20px;">
+                <span class="badge"><i class="fa-solid fa-book-bookmark"></i> Media Pembelajaran Sejarah Akademis Interaktif</span>
+                <h1 style="font-family:'Cinzel', serif; font-size:3.1rem; margin: 15px 0 20px 0; background: linear-gradient(135deg, #fff 30%, var(--page-theme-color) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    Perlawanan Ternate & Tidore
+                </h1>
+                <p style="color:var(--text-secondary); font-size:1.08rem; max-width:820px; margin: 0 auto 30px auto; line-height:1.8;">
+                    Studi sejarah komprehensif mengenai perjuangan Kesultanan Ternate dan Tidore di Maluku Utara dalam mempertahankan kedaulatan maritim dan monopoli rempah-rempah menghadapi ekspansi kolonial Portugis serta Spanyol abad ke-16 hingga abad ke-19.
+                </p>
+            </div>
+
+            <div class="article-card">
+                <h3><i class="fa-solid fa-scroll"></i> Pengantar Akademis: Rempah & Kedaulatan</h3>
+                <p>
+                    Kepulauan Maluku Utara pada abad ke-16 merupakan satu-satunya tempat di dunia (*endemic origin*) penghasil **cengkeh (*Syzygium aromaticum*)** dan **pala (*Myristica fragrans*)**. Komoditas ini bernilai fantastis di pasar Eropa, digunakan sebagai pengawet daging, bahan obat antiseptik, serta simbol status sosial aristokrasi.
+                </p>
+                <p>
+                    Awalnya bangsa Portugis diterima dengan bersahabat pada tahun 1512. Namun, Portugis segera melancarkan taktik monopoli dagang, memaksakan harga cengkeh, mencampuri takhta kesultanan, hingga berujung pada peristiwa tragis pembunuhan Sultan Hairun tahun 1570.
+                </p>
+            </div>
+
+            <h3 style="font-family:'Cinzel', serif; font-size:1.5rem; margin-bottom:20px; color:var(--text-primary);">
+                <i class="fa-solid fa-hand-pointer" style="color:var(--page-theme-color);"></i> Modul Eksplorasi Cepat (Klik Untuk Membuka)
+            </h3>
+
+            <div class="reveal-card" onclick="toggleReveal(this)">
+                <div class="reveal-header">
+                    <span>1. Mengapa Cengkeh & Pala Begitu Berharga di Eropa?</span>
+                    <i class="fa-solid fa-chevron-down reveal-icon"></i>
+                </div>
+                <div class="reveal-body">
+                    Sebelum ditemukannya teknologi pendingin (*refrigeration*), garam dan rempah-rempah Maluku adalah satu-satunya cara untuk mengawetkan daging ternak selama musim dingin di Eropa. Cengkeh bernilai setara emas (*worth its weight in gold*) dan memicu ekspedisi penjelajahan samudra oleh Portugal dan Spanyol.
+                </div>
+            </div>
+
+            <div class="reveal-card" onclick="toggleReveal(this)">
+                <div class="reveal-header">
+                    <span>2. Pengepungan 5 Tahun Benteng Kastela oleh Sultan Baabullah</span>
+                    <i class="fa-solid fa-chevron-down reveal-icon"></i>
+                </div>
+                <div class="reveal-body">
+                    Setelah Sultan Hairun dibunuh secara licik pada 1570, Sultan Baabullah mengikrarkan Sumpah Baabullah. Beliau menyatukan 72 pulau berpenghuni di Maluku dan mengepung Benteng Kastela selama 5 tahun tanpa memutus pasokan makanan untuk menundukkan Portugis secara psikologis hingga menyerah pada 28 Desember 1575.
+                </div>
+            </div>
+
+            <div class="reveal-card" onclick="toggleReveal(this)">
+                <div class="reveal-header">
+                    <span>3. Perang Gerilya Laut Sultan Nuku dari Tidore</span>
+                    <i class="fa-solid fa-chevron-down reveal-icon"></i>
+                </div>
+                <div class="reveal-body">
+                    Sultan Nuku (*Jou Barakati*) pada abad ke-18 melancarkan strategi perang laut kora-kora yang sangat lincah serta berhasil menerapkan taktik *Divide et Impera Reversed* (memanfaatkan persaingan Inggris dan Belanda) untuk membebaskan Tidore dan Ternate dari VOC.
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= HALAMAN 2: LATAR BELAKANG ================= -->
+        <section id="page-latar" class="page">
+            <span class="badge">Eksplorasi Latar Belakang</span>
+            <h2 class="section-title">Akar Konflik & Geopolitik Rempah</h2>
+            <p class="section-desc">Analisis mendalam mengenai faktor ekonomi monopoli, persaingan Perjanjian Saragosa, serta perpecahan persekutuan Uli Lima dan Uli Siwa.</p>
+
+            <div class="article-card">
+                <h3><i class="fa-solid fa-earth-americas"></i> 1. Perjanjian Tordesillas (1494) & Saragosa (1529)</h3>
+                <p>
+                    Ketika armada Portugis di bawah Francisco Serrão mendarat di Ternate (1512) dan armada Spanyol pimpinan Juan Sebastián Elcano tiba di Tidore (1521), terjadi sengketa klaim atas kepulauan Maluku. Paus Alexander VI sebelumnya telah membagi dunia dalam Perjanjian Tordesillas.
+                </p>
+                <p>
+                    Konflik batas antipodal ini diakhiri melalui **Perjanjian Saragosa (1529)**, di mana Spanyol menyetujui mundur ke Filipina setelah menerima ganti rugi 350.000 dukat dari Portugis. Hal ini menjadikan Portugis penguasa monopoli tunggal di Ternate.
+                </p>
+            </div>
+
+            <div class="article-card">
+                <h3><i class="fa-solid fa-users-between-lines"></i> 2. Uli Lima (Ternate) vs Uli Siwa (Tidore)</h3>
+                <p>
+                    Masyarakat Maluku Utara terbagi dalam dua persekutuan adat tradisional:
+                </p>
+                <div class="reveal-card" onclick="toggleReveal(this)">
+                    <div class="reveal-header">
+                        <span>• Uli Lima (Persekutuan Lima Saudara)</span>
+                        <i class="fa-solid fa-chevron-down reveal-icon"></i>
+                    </div>
+                    <div class="reveal-body">
+                        Dipimpin oleh Kesultanan Ternate, membawahi pulau-pulau di sebelah utara seperti Ambon, Seram, Obi, dan Makian. Ternate awalnya bersekutu dengan Portugis untuk memperkuat posisi militer.
+                    </div>
+                </div>
+                <div class="reveal-card" onclick="toggleReveal(this)">
+                    <div class="reveal-header">
+                        <span>• Uli Siwa (Persekutuan Sembilan Saudara)</span>
+                        <i class="fa-solid fa-chevron-down reveal-icon"></i>
+                    </div>
+                    <div class="reveal-body">
+                        Dipimpin oleh Kesultanan Tidore, membawahi pulau-pulau sebelah selatan hingga Halmahera, Jailolo, dan kepulauan Papua. Tidore sempat bersekutu dengan Spanyol untuk mengimbangi Ternate.
+                    </div>
+                </div>
+            </div>
+
+            <div class="article-card">
+                <h3><i class="fa-solid fa-scale-unbalanced-flip"></i> 3. Penindasan Monopoli Portugis</h3>
+                <p>
+                    Portugis mewajibkan seluruh cengkeh hanya boleh dijual kepada mereka dengan harga rendah yang ditentukan secara sepihak. Rakyat dilarang menjual cengkeh kepada pedagang Nusantara (Melayu, Jawa, Arab) serta mencampuri urusan tahta dan agama, yang memicu kemarahan luas rakyat Kesultanan.
+                </p>
+            </div>
+        </section>
+
+        <!-- ================= HALAMAN 3: PERLAWANAN ================= -->
+        <section id="page-perlawanan" class="page">
+            <span class="badge">Babak Jalannya Perang</span>
+            <h2 class="section-title">Perlawanan Ternate & Tidore</h2>
+            <p class="section-desc">Kisah kepahlawanan Sultan Hairun, Perang Pengepungan Sultan Baabullah, hingga perang gerilya maritim Sultan Nuku.</p>
+
+            <div class="article-card" style="border-left: 4px solid var(--page-theme-color);">
+                <h3><i class="fa-solid fa-skull-crossbones"></i> Pembunuhan Sultan Hairun di Benteng Kastela (1570)</h3>
+                <p>
+                    Sultan Hairun memimpin perlawanan menolak monopoli Portugis. Karena terdesak oleh gerilya maritim, Gubernur Portugis **Diogo Lopes de Mesquita** mengundang Sultan Hairun ke Benteng Nostra Senhora da Anunciada (Benteng Kastela) pada **28 Februari 1570** untuk perundingan damai.
+                </p>
+                <p>
+                    Namun, setelah Sultan masuk tanpa pengawal, beliau dibunuh secara keji oleh keponakan Gubernur, Martim Afonso do Amaral. Tragedi ini membakar kemarahan seluruh rakyat Maluku.
+                </p>
+            </div>
+
+            <h3 style="font-family:'Cinzel', serif; font-size:1.4rem; margin: 30px 0 15px 0;"><i class="fa-solid fa-chess"></i> Tahapan Strategi Sultan Baabullah</h3>
+            
+            <div class="reveal-card" onclick="toggleReveal(this)">
+                <div class="reveal-header">
+                    <span>1. Mobilisasi 72 Pulau & Sumpah Baabullah</span>
+                    <i class="fa-solid fa-chevron-down reveal-icon"></i>
+                </div>
+                <div class="reveal-body">
+                    Putra Sultan Hairun, Sultan Baabullah, mengikrarkan sumpah untuk mengusir Portugis. Beliau berhasil menyatukan persekutuan dari Sulawesi, Nusa Tenggara, hingga Papua, mengumpulkan 2.000 perahu kora-kora dan 120.000 prajurit laut.
+                </div>
+            </div>
+
+            <div class="reveal-card" onclick="toggleReveal(this)">
+                <div class="reveal-header">
+                    <span>2. Penyekatan Benteng & Isolasi Logistik</span>
+                    <i class="fa-solid fa-chevron-down reveal-icon"></i>
+                </div>
+                <div class="reveal-body">
+                    Pasukan Ternate merebut benteng-benteng satelit Portugis di sekitar wilayah Ternate dan mengisolasi Benteng Kastela dari bantuan kapal amunisi yang dikirim Portugis dari Malaka.
+                </div>
+            </div>
+
+            <div class="reveal-card" onclick="toggleReveal(this)">
+                <div class="reveal-header">
+                    <span>3. Pengepungan Kemanusiaan 5 Tahun & Pengusiran (1575)</span>
+                    <i class="fa-solid fa-chevron-down reveal-icon"></i>
+                </div>
+                <div class="reveal-body">
+                    Sultan Baabullah tidak melakukan pembantaian langsung, melainkan mengurung benteng selama 5 tahun hingga Portugis kehabisan amunisi. Pada 28 Desember 1575, Portugis menyerah tanpa syarat dan diusir dari Ternate menuju Ambon dan Timor.
+                </div>
+            </div>
+
+            <div class="article-card" style="margin-top:30px;">
+                <h3><i class="fa-solid fa-ship"></i> Perang Maritim Sultan Nuku dari Tidore (1780-1805)</h3>
+                <p>
+                    Dua abad kemudian, VOC Belanda menguasai Maluku. **Sultan Nuku** dari Tidore melancarkan perang gerilya laut menggunakan perahu kora-kora yang dapat bermanuver cepat di celah karang dangkal Halmahera dan Papua.
+                </p>
+                <p>
+                    Nuku bersekutu dengan pasukan Inggris (EIC) untuk memperoleh meriam modern, lalu menghancurkan armada VOC dan membebaskan Tidore serta Ternate dari penjajahan Belanda pada tahun 1801.
+                </p>
+            </div>
+        </section>
+
+        <!-- ================= HALAMAN 4: PETA GEOGRAFIS (SVG) ================= -->
+        <section id="page-peta" class="page">
+            <span class="badge">Peta Vektor Presisi</span>
+            <h2 class="section-title">Peta Geografis Maluku Utara</h2>
+            <p class="section-desc">Eksplorasi wilayah geopolitik Kesultanan Ternate, Tidore, Halmahera, serta benteng pertahanan utama. Klik pada pulau atau benteng untuk melihat data inspector.</p>
+
+            <div class="map-section">
+                <div class="map-container-grid">
+                    <!-- SVG MAP CANVAS -->
+                    <div class="svg-map-wrapper">
+                        <svg viewBox="0 0 500 400">
+                            <!-- Daratan Halmahera (Kanan) -->
+                            <path class="island-shape" d="M 360 20 C 390 60, 420 120, 390 200 C 370 250, 410 320, 430 380 L 490 380 L 490 20 Z" onclick="inspectMap('halmahera')"/>
+                            <text x="410" y="150" fill="#64748b" font-size="12" font-weight="700">HALMAHERA</text>
+
+                            <!-- Pulau Ternate -->
+                            <path class="island-shape" d="M 120 100 C 145 90, 170 105, 165 135 C 160 160, 130 165, 115 145 C 105 130, 105 110, 120 100 Z" id="island-ternate" onclick="inspectMap('ternate')"/>
+                            <text x="110" y="85" fill="#14b8a6" font-size="11" font-weight="800">TERNATE</text>
+
+                            <!-- Benteng Tolukko (Utara Ternate) -->
+                            <g class="map-marker" onclick="inspectMap('fort-tolukko')">
+                                <circle cx="150" cy="110" r="5" fill="#ef4444" />
+                                <circle cx="150" cy="110" r="9" fill="none" stroke="#ef4444" stroke-width="1.5" />
+                            </g>
+
+                            <!-- Benteng Kastela (Selatan Ternate) -->
+                            <g class="map-marker" onclick="inspectMap('fort-kastela')">
+                                <circle cx="130" cy="155" r="5" fill="#ef4444" />
+                                <circle cx="130" cy="155" r="9" fill="none" stroke="#ef4444" stroke-width="1.5" />
+                            </g>
+
+                            <!-- Pulau Maitara -->
+                            <path class="island-shape" d="M 150 185 C 160 180, 170 188, 165 198 C 158 202, 148 198, 150 185 Z" onclick="inspectMap('maitara')"/>
+                            <text x="175" y="193" fill="#94a3b8" font-size="9">P. Maitara</text>
+
+                            <!-- Pulau Tidore -->
+                            <path class="island-shape" d="M 145 220 C 180 210, 195 240, 185 285 C 170 310, 135 300, 130 265 C 128 240, 135 225, 145 220 Z" id="island-tidore" onclick="inspectMap('tidore')"/>
+                            <text x="125" y="320" fill="#14b8a6" font-size="11" font-weight="800">TIDORE</text>
+
+                            <!-- Benteng Tahula (Tidore) -->
+                            <g class="map-marker" onclick="inspectMap('fort-tahula')">
+                                <circle cx="170" cy="270" r="5" fill="#3b82f6" />
+                                <circle cx="170" cy="270" r="9" fill="none" stroke="#3b82f6" stroke-width="1.5" />
+                            </g>
+
+                            <!-- Pulau Mare -->
+                            <path class="island-shape" d="M 140 335 C 150 330, 158 340, 150 348 C 142 348, 138 340, 140 335 Z" onclick="inspectMap('mare')"/>
+                            <text x="162" y="345" fill="#94a3b8" font-size="8">P. Mare</text>
+                        </svg>
+                    </div>
+
+                    <!-- INSPECTOR PANEL -->
+                    <div class="map-inspector">
+                        <div id="inspector-tag" class="badge">Info Geografis</div>
+                        <h3 id="inspector-title" style="font-family:'Cinzel', serif; font-size:1.4rem; color:var(--page-theme-color); margin-bottom:8px;">Pulau Ternate</h3>
+                        <div id="inspector-coord" style="font-size:0.78rem; color:var(--text-muted); font-family:monospace; margin-bottom:14px;">KOORDINAT: 0°48'N 127°20'E</div>
+                        <div id="inspector-desc" style="color:var(--text-secondary); font-size:0.92rem; line-height:1.7;">
+                            Pulau gunung api melingkar dengan Gunung Gamalama di pusatnya. Merupakan pusat Kesultanan Ternate dan pangkalan perlawanan Sultan Baabullah.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= HALAMAN 5: GARIS WAKTU ================= -->
+        <section id="page-kronologi" class="page">
+            <span class="badge">Garis Waktu Historis</span>
+            <h2 class="section-title">Kronologi Peristiwa Historic</h2>
+            <p class="section-desc">Klik titik tahun pada slider di bawah untuk membaca catatan peristiwa secara runtut.</p>
+
+            <div class="timeline-container">
+                <div class="timeline-track">
+                    <div class="timeline-node active" onclick="selectTimeline(0, '1512', 'Pendaratan Portugis', 'Armada Portugis pimpinan Francisco Serrão mendarat di Maluku dan diterima Sultan Abu Lais di Ternate.')">
+                        1512
+                        <span class="timeline-node-label">Pendaratan</span>
+                    </div>
+                    <div class="timeline-node" onclick="selectTimeline(1, '1529', 'Perjanjian Saragosa', 'Spanyol menyerahkan klaim Maluku kepada Portugis dan mundur ke Filipina setelah menerima ganti rugi 350.000 dukat.')">
+                        1529
+                        <span class="timeline-node-label">Saragosa</span>
+                    </div>
+                    <div class="timeline-node" onclick="selectTimeline(2, '1570', 'Pembunuhan Sultan Hairun', 'Gubernur Diogo Lopes de Mesquita membunuh Sultan Hairun di Benteng Kastela secara licik.')">
+                        1570
+                        <span class="timeline-node-label">Tragedi 1570</span>
+                    </div>
+                    <div class="timeline-node" onclick="selectTimeline(3, '1575', 'Pengusiran Portugis', 'Sultan Baabullah memenangkan pengepungan 5 tahun, memaksa Portugis menyerahkan Benteng Kastela dan angkat kaki.')">
+                        1575
+                        <span class="timeline-node-label">Pengusiran</span>
+                    </div>
+                    <div class="timeline-node" onclick="selectTimeline(4, '1780', 'Perjuangan Sultan Nuku', 'Sultan Nuku menyatukan kekuatan kora-kora Maluku-Papua dan bersekutu dengan Inggris mengusir VOC Belanda.')">
+                        1780
+                        <span class="timeline-node-label">Perang Nuku</span>
+                    </div>
+                </div>
+
+                <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-glass); border-radius: var(--radius-md); padding: 26px; margin-top: 20px;">
+                    <div id="time-card-year" style="color:var(--page-theme-color); font-size:0.85rem; font-weight:800; margin-bottom:6px;">Tahun 1512</div>
+                    <h3 id="time-card-title" style="font-family:'Cinzel', serif; font-size:1.45rem; margin-bottom:12px;">Pendaratan Portugis</h3>
+                    <p id="time-card-desc" style="color:var(--text-secondary); font-size:0.95rem;">
+                        Armada Portugis pimpinan Francisco Serrão mendarat di Maluku dan diterima Sultan Abu Lais di Ternate.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= HALAMAN 6: TOKOH 3D CARDS ================= -->
+        <section id="page-tokoh" class="page">
+            <span class="badge">Tokoh Bersejarah</span>
+            <h2 class="section-title">Profil Tokoh Pejuang & Antagonis</h2>
+            <p class="section-desc">Arahkan kursor atau sentuh kartu untuk memutar 180° dan membaca biografi tokoh.</p>
+
+            <div class="cards-3d-grid">
+                <!-- SULTAN HAIRUN -->
+                <div class="card-3d-wrapper">
+                    <div class="card-3d-inner" onclick="this.classList.toggle('flipped')">
+                        <div class="card-front">
+                            <div>
+                                <div class="badge">Sultan Ternate ke-23</div>
+                                <h3 style="font-family:'Cinzel', serif; font-size:1.5rem; color:var(--text-primary); margin-bottom:10px;">Sultan Hairun</h3>
+                                <p style="color:var(--text-muted); font-size:0.88rem;">Pemimpin gigih yang membela hak rakyat dan menolak monopoli Portugis.</p>
+                            </div>
+                            <div style="font-size:0.75rem; color:var(--page-theme-color);"><i class="fa-solid fa-rotate"></i> Klik untuk memutar kartu</div>
+                        </div>
+                        <div class="card-back">
+                            <h4 style="color:var(--page-theme-color); font-family:'Cinzel', serif; margin-bottom:10px;">Perjuangan & Tragedi</h4>
+                            <p style="font-size:0.85rem; color:#cbd5e1; line-height:1.6;">
+                                Beliat gigih mempertahankan kedaulatan Ternate. Gugur sebagai martir setelah dibunuh secara licik di Benteng Kastela pada 28 Februari 1570 saat menghadiri perundingan damai.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SULTAN BAABULLAH -->
+                <div class="card-3d-wrapper">
+                    <div class="card-3d-inner" onclick="this.classList.toggle('flipped')">
+                        <div class="card-front">
+                            <div>
+                                <div class="badge">Penguasa 72 Pulau</div>
+                                <h3 style="font-family:'Cinzel', serif; font-size:1.5rem; color:var(--text-primary); margin-bottom:10px;">Sultan Baabullah</h3>
+                                <p style="color:var(--text-muted); font-size:0.88rem;">Panglima agung maritim yang mengusir penjajah Portugis dari bumi Maluku.</p>
+                            </div>
+                            <div style="font-size:0.75rem; color:var(--page-theme-color);"><i class="fa-solid fa-rotate"></i> Klik untuk memutar kartu</div>
+                        </div>
+                        <div class="card-back">
+                            <h4 style="color:var(--page-theme-color); font-family:'Cinzel', serif; margin-bottom:10px;">Puncak Kejayaan</h4>
+                            <p style="font-size:0.85rem; color:#cbd5e1; line-height:1.6;">
+                                Memimpin perang total selama 5 tahun hingga Portugis menyerah pada 28 Desember 1575. Memperluas kedaulatan Kesultanan Ternate hingga membawahi 72 pulau berpenghuni.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SULTAN NUKU -->
+                <div class="card-3d-wrapper">
+                    <div class="card-3d-inner" onclick="this.classList.toggle('flipped')">
+                        <div class="card-front">
+                            <div>
+                                <div class="badge">Jou Barakati</div>
+                                <h3 style="font-family:'Cinzel', serif; font-size:1.5rem; color:var(--text-primary); margin-bottom:10px;">Sultan Nuku</h3>
+                                <p style="color:var(--text-muted); font-size:0.88rem;">Pahlawan tak terkalahkan dari Tidore, pakar perang gerilya laut kora-kora.</p>
+                            </div>
+                            <div style="font-size:0.75rem; color:var(--page-theme-color);"><i class="fa-solid fa-rotate"></i> Klik untuk memutar kartu</div>
+                        </div>
+                        <div class="card-back">
+                            <h4 style="color:var(--page-theme-color); font-family:'Cinzel', serif; margin-bottom:10px;">Diplomasi & Perang</h4>
+                            <p style="font-size:0.85rem; color:#cbd5e1; line-height:1.6;">
+                                Menyatukan para kapitan laut dari Maluku hingga Papua, serta mempraktikkan diplomasi adu domba antara Inggris dan Belanda untuk mengusir VOC.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= HALAMAN 7: KUIS EVALUASI ================= -->
+        <section id="page-kuis" class="page">
+            <span class="badge">Evaluasi Pembelajaran</span>
+            <h2 class="section-title">Kuis Sejarah Komprehensif</h2>
+            <p class="section-desc">Uji pemahaman akademismu. Setiap pertanyaan dilengkapi pembahasan sejarah secara terperinci.</p>
+
+            <div class="quiz-wrapper">
+                <div id="quiz-question-box">
+                    <div style="display:flex; justify-content:space-between; font-size:0.85rem; color:var(--text-muted); margin-bottom:14px;">
+                        <span id="quiz-counter">Soal 1 dari 5</span>
+                        <span id="quiz-score" style="color:var(--page-theme-color); font-weight:700;">Skor: 0</span>
+                    </div>
+                    <h3 id="quiz-q-title" style="font-size:1.15rem; margin-bottom:20px; font-family:'Plus Jakarta Sans', sans-serif;">
+                        Loading pertanyaan...
+                    </h3>
+                    <div id="quiz-answers-container"></div>
+                    
+                    <div id="quiz-exp-box" class="explanation-box">
+                        <div style="font-weight:700; color:var(--page-theme-color); margin-bottom:6px;"><i class="fa-solid fa-graduation-cap"></i> Pembahasan Akademis Sejarah:</div>
+                        <p id="quiz-exp-text" style="font-size:0.92rem; color:#cbd5e1;"></p>
+                    </div>
+                </div>
+
+                <div id="quiz-result-box" style="display:none; text-align:center; padding:35px 0;">
+                    <div style="font-size:3.8rem; color:var(--page-theme-color); margin-bottom:15px;"><i class="fa-solid fa-trophy"></i></div>
+                    <h3 style="font-family:'Cinzel', serif; font-size:2.2rem; margin-bottom:10px;">Hasil Evaluasi Selesai!</h3>
+                    <p id="quiz-final-text" style="color:var(--text-secondary); margin-bottom:25px; font-size:1.05rem;"></p>
+                    <button class="nav-btn active" style="margin:0 auto; padding:12px 30px; font-size:0.95rem;" onclick="resetQuiz()">Ulangi Evaluasi Kuis</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // --- 1. PAGE SWITCHING & THEME DYNAMIC LOGIC ---
+        function switchPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+            const targetPage = document.getElementById('page-' + pageId);
+            const targetNav = document.getElementById('nav-' + pageId);
+
+            if (targetPage) {
+                document.body.setAttribute('data-page', pageId);
+                targetPage.classList.add('active');
+                if (targetNav) targetNav.classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // --- 2. CLICK-TO-REVEAL CARDS LOGIC ---
+        function toggleReveal(element) {
+            element.classList.toggle('open');
+        }
+
+        // --- 3. MAP DATA & INSPECTOR ---
+        const mapData = {
+            'ternate': {
+                tag: 'Kesultanan Utama',
+                title: 'Pulau Ternate',
+                coord: '0°48\'N 127°20\'E',
+                desc: 'Pulau vulkanik lingkar Gunung Gamalama. Pusat Kesultanan Ternate, wilayah penghasil cengkeh utama, dan basis komando perlawanan Sultan Baabullah.'
+            },
+            'tidore': {
+                tag: 'Kesultanan Utama',
+                title: 'Pulau Tidore',
+                coord: '0°41\'N 127°24\'E',
+                desc: 'Pusat Kesultanan Tidore dengan puncak Gunung Marijang. Pangkalan perlawanan Sultan Nuku yang membawahi pengaruh hingga Halmahera dan Papua.'
+            },
+            'halmahera': {
+                tag: 'Daratan Besar',
+                title: 'Halmahera Barat',
+                coord: '1°00\'N 127°30\'E',
+                desc: 'Pulau terbesar di Maluku Utara yang kaya sumber pangan dan prajurit tangguh. Wilayah persembunyian kritis perang gerilya kora-kora.'
+            },
+            'fort-kastela': {
+                tag: 'Benteng Bersejarah',
+                title: 'Benteng Kastela (Nostra Senhora da Anunciada)',
+                coord: '0°45\'N 127°18\'E (Ternate)',
+                desc: 'Benteng batu Portugis pertama di Maluku (1522). Tempat terjadinya tragedi pembunuhan Sultan Hairun tahun 1570, serta lokasi pengepungan 5 tahun Sultan Baabullah.'
+            },
+            'fort-tolukko': {
+                tag: 'Benteng Bersejarah',
+                title: 'Benteng Tolukko',
+                coord: '0°50\'N 127°23\'E (Ternate)',
+                desc: 'Didirikan Portugis pada 1540 di atas bukit batu karang untuk mengawasi pergerakan kapal di selat Ternate-Halmahera.'
+            },
+            'fort-tahula': {
+                tag: 'Benteng Bersejarah',
+                title: 'Benteng Tahula',
+                coord: '0°40\'N 127°26\'E (Tidore)',
+                desc: 'Benteng batu pertahanan Spanyol di Tidore yang dibangun di atas bukit karang sebagai imbal tanding dominasi Portugis di Ternate.'
+            },
+            'maitara': {
+                tag: 'Pulau Kecil Strategis',
+                title: 'Pulau Maitara',
+                coord: '0°43\'N 127°22\'E',
+                desc: 'Pulau indah berbukit di selat antara Ternate dan Tidore. Digunakan sebagai pos pengintaian armada maritim.'
+            },
+            'mare': {
+                tag: 'Pulau Kerajinan',
+                title: 'Pulau Mare',
+                coord: '0°34\'N 127°23\'E',
+                desc: 'Pulau di sebelah selatan Tidore yang terkenal sebagai pusat pembuat perabotan tanah liat (gerabah) logistik perang.'
+            }
+        };
+
+        function inspectMap(key) {
+            const data = mapData[key];
+            if (data) {
+                document.getElementById('inspector-tag').innerText = data.tag;
+                document.getElementById('inspector-title').innerText = data.title;
+                document.getElementById('inspector-coord').innerText = 'KOORDINAT: ' + data.coord;
+                document.getElementById('inspector-desc').innerText = data.desc;
+            }
+        }
+
+        // --- 4. TIMELINE SLIDER LOGIC ---
+        function selectTimeline(idx, year, title, desc) {
+            const nodes = document.querySelectorAll('.timeline-node');
+            nodes.forEach(n => n.classList.remove('active'));
+            nodes[idx].classList.add('active');
+
+            document.getElementById('time-card-year').innerText = 'Tahun ' + year;
+            document.getElementById('time-card-title').innerText = title;
+            document.getElementById('time-card-desc').innerText = desc;
+        }
+
+        // --- 5. KUIS EVALUASI LOGIC ---
+        const quizData = [
+            {
+                q: "Perjanjian internasional apakah yang menandai mundurnya Spanyol dari Tidore ke Filipina pada tahun 1529?",
+                opts: ["Perjanjian Tordesillas", "Perjanjian Saragosa", "Perjanjian Bongaya", "Perjanjian Utrecht"],
+                ans: 1,
+                exp: "Perjanjian Saragosa (1529) menetapkan garis antipodal baru, di mana Spanyol meninggalkan Maluku menuju Filipina setelah menerima ganti rugi 350.000 dukat dari Portugis."
+            },
+            {
+                q: "Siapakah Gubernur Portugis yang mendalangi pembunuhan Sultan Hairun di Benteng Kastela pada tahun 1570?",
+                opts: ["Francisco Serrão", "Afonso de Albuquerque", "Diogo Lopes de Mesquita", "Tristão d'Acunha"],
+                ans: 2,
+                exp: "Diogo Lopes de Mesquita secara licik mengundang Sultan Hairun ke dalam Benteng Kastela tanpa pengawal dengan dalih perundingan damai lalu membunuhnya."
+            },
+            {
+                q: "Bagaimanakah taktik pengepungan Sultan Baabullah selama 5 tahun terhadap Benteng Kastela (1570-1575)?",
+                opts: [
+                    "Membumihanguskan seluruh tanaman cengkeh di Ternate",
+                    "Memutus bantuan pasokan militer Portugis tanpa melakukan pembantaian massal hingga musuh menyerah",
+                    "Meminta bantuan Angkatan Laut Inggris",
+                    "Menyengat musuh dengan serangan frontal langsung"
+                ],
+                ans: 1,
+                exp: "Sultan Baabullah menerapkan pengepungan berdisiplin: memblokir pasokan amunisi Portugis tanpa membantai tawanan, hingga Portugis menyerah pada 28 Desember 1575."
+            },
+            {
+                q: "Strategi diplomasi Sultan Nuku dari Tidore dalam melawan dominasi VOC Belanda dilakukan dengan cara...",
+                opts: [
+                    "Memanfaatkan persaingan antara Inggris (EIC) dan Belanda (VOC) untuk memperoleh bantuan senjata",
+                    "Membakar perahu kora-kora milik rakyat Ternate",
+                    "Menyerahkan wilayah Papua kepada Portugis",
+                    "Mengalah kepada pasukan VOC"
+                ],
+                ans: 0,
+                exp: "Sultan Nuku membalikkan strategi Divide et Impera dengan memanfaatkan persaingan Inggris dan Belanda untuk mengusir VOC dari Ternate dan Tidore."
+            },
+            {
+                q: "Gelar julukan historis yang disandang Sultan Baabullah setelah membebaskan Maluku dan membawahi puluhan pulau berpenghuni adalah...",
+                opts: ["Jou Barakati", "Penguasa 72 Pulau", "Ayam Jantan dari Timur", "Mutiara dari Timur"],
+                ans: 1,
+                exp: "Sultan Baabullah dijuluki sebagai 'Penguasa 72 Pulau' karena pengaruh kedaulatan Kesultanan Ternate di bawah kepemimpinannya membentang luas mencakup Maluku, Sulawesi, hingga kepulauan Papua."
+            }
+        ];
+
+        let currentQuizIdx = 0;
+        let quizScoreVal = 0;
+
+        function loadQuizQuestion() {
+            const current = quizData[currentQuizIdx];
+            document.getElementById('quiz-counter').innerText = `Soal ${currentQuizIdx + 1} dari ${quizData.length}`;
+            document.getElementById('quiz-score').innerText = `Skor: ${quizScoreVal}`;
+            document.getElementById('quiz-q-title').innerText = current.q;
+            document.getElementById('quiz-exp-box').style.display = 'none';
+
+            const container = document.getElementById('quiz-answers-container');
+            container.innerHTML = '';
+
+            current.opts.forEach((text, i) => {
+                const btn = document.createElement('button');
+                btn.className = 'quiz-opt-btn';
+                btn.innerHTML = `<span>${text}</span> <i class="fa-regular fa-circle"></i>`;
+                btn.onclick = () => checkQuizAnswer(i, btn);
+                container.appendChild(btn);
+            });
+        }
+
+        function checkQuizAnswer(selected, btn) {
+            const current = quizData[currentQuizIdx];
+            const allBtns = document.querySelectorAll('.quiz-opt-btn');
+            allBtns.forEach(b => b.style.pointerEvents = 'none');
+
+            if (selected === current.ans) {
+                btn.classList.add('correct');
+                btn.querySelector('i').className = 'fa-solid fa-circle-check';
+                quizScoreVal += 20;
+            } else {
+                btn.classList.add('incorrect');
+                btn.querySelector('i').className = 'fa-solid fa-circle-xmark';
+                allBtns[current.ans].classList.add('correct');
+            }
+
+            document.getElementById('quiz-exp-text').innerText = current.exp;
+            document.getElementById('quiz-exp-box').style.display = 'block';
+
+            setTimeout(() => {
+                currentQuizIdx++;
+                if (currentQuizIdx < quizData.length) {
+                    loadQuizQuestion();
+                } else {
+                    showQuizResult();
+                }
+            }, 3000);
+        }
+
+        function showQuizResult() {
+            document.getElementById('quiz-question-box').style.display = 'none';
+            document.getElementById('quiz-result-box').style.display = 'block';
+            document.getElementById('quiz-final-text').innerText = `Selamat! Kamu telah menyelesaikan evaluasi pembelajaran dengan skor total ${quizScoreVal} / 100.`;
+        }
+
+        function resetQuiz() {
+            currentQuizIdx = 0;
+            quizScoreVal = 0;
+            document.getElementById('quiz-question-box').style.display = 'block';
+            document.getElementById('quiz-result-box').style.display = 'none';
+            loadQuizQuestion();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadQuizQuestion();
+        });
+    </script>
+</body>
+</html>
